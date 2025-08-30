@@ -183,7 +183,6 @@ class Juego:
         print(f"Dificultad seleccionada: {dificultad} (profundidad de búsqueda: {profundidad_ia})")
 
         self.gato = Gato(self.tablero.pos_gato, profundidad_busqueda=profundidad_ia)
-        self.raton = Raton(self.tablero.pos_raton, profundidad_busqueda=profundidad_ia)
 
     def jugar(self):
         turnos_jugados = 0
