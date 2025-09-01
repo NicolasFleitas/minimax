@@ -53,11 +53,8 @@ class Tablero:
     def obtener_movimientos_validos(self,posicion): 
         fila,col = posicion
         movimientos = []
-        cambios = [(-1, 0), (1, 0), (0, -1), (0, 1)]  
-        # cambios = [
-        #     (-1, 0), (1, 0), (0, -1), (0, 1), # Ortogonales
-        #     (-1, -1), (-1, 1), (1, -1), (1, 1)  # Diagonales
-        # ]   
+        cambios = [(-1, 0), (1, 0), (0, -1), (0, 1)] # Ortogonales 
+        # (-1, -1), (-1, 1), (1, -1), (1, 1)  # Diagonales   
                        
         for cambio_fila, cambio_col in cambios:
             nueva_fila = fila + cambio_fila
@@ -77,18 +74,17 @@ class Tablero:
             pos_actual = self.pos_raton
       
         tablero_copia = copy.deepcopy(self.grid)
-        # Se guardan las posiciones actuales para el tablero copia
+
+        tablero_copia[pos_actual[0]][pos_actual[1]] = '🧱'
+        tablero_copia[movimiento[0]][movimiento[1]] = simbolo
+        # Se guardan las posiciones actuales para el tablero copia        
         pos_gato_nueva, pos_raton_nueva = self.pos_gato, self.pos_raton
-        # 3. Limpiar la posición anterior y mover al jugador en la copia
-        if jugador == 'gato':
-            tablero_copia[pos_actual[0]][pos_actual[1]] = '🧱'
-            tablero_copia[movimiento[0]][movimiento[1]] = simbolo
-            pos_gato_nueva = movimiento  # Actualizar la nueva posición del gato
+
+        if jugador == 'gato':           
+            pos_gato_nueva = movimiento  
         else: 
-            tablero_copia[pos_actual[0]][pos_actual[1]] = '🧱'
-            tablero_copia[movimiento[0]][movimiento[1]] = simbolo
-            pos_raton_nueva = movimiento # Actualizar la nueva posición del ratón
-        # Devolvemos el tablero modificado
+            pos_raton_nueva = movimiento 
+       
         return Tablero(self.tamanho, tablero_copia, pos_gato_nueva, pos_raton_nueva)
 
     def evaluar(self):   
@@ -165,10 +161,10 @@ class Raton:
         return mejor_movimiento
           
 class Juego:
-    def __init__(self,tamanho=5):
+    def __init__(self,tamanho=5,turno_restantes=10):
         self.tablero = Tablero(tamanho)
         self.turno_actual = 'raton' 
-        self.turno_restantes = 15
+        self.turno_restantes = turno_restantes
         
         while True:
 
@@ -216,7 +212,7 @@ class Juego:
             turnos_jugados += 1
             self.turno_restantes -= 1
 
-            # time.sleep(0.5)
+            time.sleep(0.3)
         
         self.imprimir_resultado()
 
@@ -231,5 +227,5 @@ class Juego:
         self.tablero.imprimir()
 
 if __name__ == "__main__":
-    juego  = Juego(tamanho=5)
+    juego  = Juego(tamanho=5,turno_restantes=30)
     juego.jugar()
