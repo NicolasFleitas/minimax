@@ -166,23 +166,33 @@ class Raton:
           
 class Juego:
     def __init__(self,tamanho=5):
-    
         self.tablero = Tablero(tamanho)
         self.turno_actual = 'raton' 
         self.turno_restantes = 15
+        
+        while True:
 
-        dificultad = input("Elige la dificultad del Gato (facil, normal, dificil): ").lower()
-
-        if dificultad == 'facil':
-            profundidad_ia = 2
-        elif dificultad == 'dificil':
-            profundidad_ia = 6
-        else:
-            profundidad_ia = 4
+            opcion = input("Elige el nivel de dificultad para el ratón( 1 = facil, 2 = normal, 3 = difícil): ")
+            try:   
+                dificultad = int(opcion)
+                if dificultad == 1:
+                    profundidad_ia = 2
+                    break
+                elif dificultad == 2:
+                    profundidad_ia = 4
+                    break
+                elif dificultad == 3:
+                    profundidad_ia = 6
+                    break
+                else:
+                    print('Elegir un número de dificultad valida (1, 2 o 3)')
+            except ValueError:
+                print('Error: Debes ingresar solo un número.')
             
         print(f"Dificultad seleccionada: {dificultad} (profundidad de búsqueda: {profundidad_ia})")
 
         self.gato = Gato(self.tablero.pos_gato, profundidad_busqueda=profundidad_ia)
+        self.raton = Raton(self.tablero.pos_raton)
 
     def jugar(self):
         turnos_jugados = 0
@@ -206,7 +216,7 @@ class Juego:
             turnos_jugados += 1
             self.turno_restantes -= 1
 
-            time.sleep(0.5)
+            # time.sleep(0.5)
         
         self.imprimir_resultado()
 
@@ -221,5 +231,5 @@ class Juego:
         self.tablero.imprimir()
 
 if __name__ == "__main__":
-    juego  = Juego(tamanho=6)
+    juego  = Juego(tamanho=5)
     juego.jugar()
