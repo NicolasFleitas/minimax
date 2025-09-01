@@ -7,6 +7,7 @@ def minimax(tablero, profundidad, es_turno_max):
 
         if abs(puntuacion) == 1000:
             return puntuacion - profundidad
+        
         return puntuacion
 
     if not es_turno_max: 
@@ -17,6 +18,7 @@ def minimax(tablero, profundidad, es_turno_max):
             nuevo_tablero = tablero.simular_movimiento('gato', movimiento)
             valor = minimax(nuevo_tablero,profundidad - 1, True)
             mejor_valor = min(mejor_valor, valor)
+
         return mejor_valor
     else: 
         mejor_valor = float('-inf') 
@@ -26,6 +28,7 @@ def minimax(tablero, profundidad, es_turno_max):
             nuevo_tablero = tablero.simular_movimiento('raton', movimiento)
             valor = minimax(nuevo_tablero,profundidad - 1, False)
             mejor_valor = max(mejor_valor, valor)
+
         return mejor_valor
         
 class Tablero:
@@ -90,14 +93,10 @@ class Tablero:
     def evaluar(self):   
         if self.pos_gato == self.pos_raton:
             return -1000   
-        # Distancia 1
-        # puntuacion = abs(self.pos_raton[0] - self.pos_gato[0]) + abs(self.pos_raton[1] - self.pos_gato[1])
-        # Distancia 2 
-        # puntuacion = ((self.pos_raton[0] - self.pos_gato[0])**2 + (self.pos_raton[1] - self.pos_gato[1])**2)**1/2
-        # Distancia 3
-        puntuacion = max(abs(self.pos_raton[0] - self.pos_gato[0]), abs(self.pos_raton[1] - self.pos_gato[1]))       
-        #print(f"DEBUG: Gato en {self.pos_gato}, Ratón en {self.pos_raton} -> Puntuacion Chebyshev: {puntuacion}")
         
+        puntuacion = abs(self.pos_raton[0] - self.pos_gato[0]) + abs(self.pos_raton[1] - self.pos_gato[1])
+        # puntuacion = ((self.pos_raton[0] - self.pos_gato[0])**2 + (self.pos_raton[1] - self.pos_gato[1])**2)**1/2 #D2
+        # puntuacion = max(abs(self.pos_raton[0] - self.pos_gato[0]), abs(self.pos_raton[1] - self.pos_gato[1])) #D3           
         return puntuacion    
     
     def mover_raton(self, movimiento):
@@ -211,7 +210,6 @@ class Juego:
 
             turnos_jugados += 1
             self.turno_restantes -= 1
-
             time.sleep(0.3)
         
         self.imprimir_resultado()
@@ -227,5 +225,5 @@ class Juego:
         self.tablero.imprimir()
 
 if __name__ == "__main__":
-    juego  = Juego(tamanho=5,turno_restantes=30)
+    juego  = Juego(tamanho=5,turno_restantes=20)
     juego.jugar()
